@@ -214,6 +214,12 @@ def update_profile():
         profile.google_scholar = request.form.get('google_scholar', '')
         profile.github = request.form.get('github', '')
         profile.linkedin = request.form.get('linkedin', '')
+        if 'photo' in request.files:
+            photo = request.files['photo']
+            if photo.filename != '':
+                photo_path = os.path.join(app.root_path, 'static', 'images', photo.filename)
+                photo.save(photo_path)
+                profile.profile_image = photo.filename
         db.session.commit()
         flash('Profile updated!', 'success')
         return redirect(url_for('admin_dashboard'))
