@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Publication{% endblock %}
+
+{% block content %}
+<section class="admin-form-section">
+    <h1>Edit Publication</h1>
+    <form method="POST" enctype="multipart/form-data" class="admin-form">
+        <div class="form-group">
+            <label>Title *</label>
+            <input type="text" name="title" value="{{ paper.title }}" required>
+        </div>
+        <div class="form-group">
+            <label>Authors *</label>
+            <input type="text" name="authors" value="{{ paper.authors }}" required>
+        </div>
+        <div class="form-group">
+            <label>Journal / Conference *</label>
+            <input type="text" name="journal" value="{{ paper.journal }}" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Year *</label>
+                <input type="number" name="year" value="{{ paper.year }}" required>
+            </div>
+            <div class="form-group">
+                <label>Category *</label>
+                <select name="category" required>
+                    <option value="Journal" {{ 'selected' if paper.category == 'Journal' }}>Journal</option>
+                    <option value="Conference" {{ 'selected' if paper.category == 'Conference' }}>Conference</option>
+                    <option value="Book Chapter" {{ 'selected' if paper.category == 'Book Chapter' }}>Book Chapter</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>DOI Link</label>
+            <input type="text" name="doi" value="{{ paper.doi or '' }}">
+        </div>
+        <div class="form-group">
+            <label>Abstract</label>
+            <textarea name="abstract" rows="4">{{ paper.abstract or '' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label>Upload New PDF {% if paper.pdf_filename %}(Current: {{ paper.pdf_filename }}){% endif %}</label>
+            <input type="file" name="pdf" accept=".pdf">
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">Save Changes</button>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn-outline">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

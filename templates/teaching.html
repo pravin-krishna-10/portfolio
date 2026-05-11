@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Teaching{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Teaching</h1>
+    <p>Courses I teach and have taught</p>
+</section>
+
+{% if current_courses %}
+<section class="courses-section">
+    <h2>Current Courses</h2>
+    <div class="courses-grid">
+        {% for course in current_courses %}
+        <div class="course-card current">
+            <span class="course-badge active">Active</span>
+            <h3>{{ course.course_code }}: {{ course.course_name }}</h3>
+            <p class="course-level">{{ course.level }} | {{ course.semester }} {{ course.year }}</p>
+            {% if course.description %}
+                <p class="course-description">{{ course.description }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% if past_courses %}
+<section class="courses-section">
+    <h2>Previously Taught</h2>
+    <div class="courses-grid past">
+        {% for course in past_courses %}
+        <div class="course-card">
+            <h3>{{ course.course_code }}: {{ course.course_name }}</h3>
+            <p class="course-level">{{ course.level }} | {{ course.semester }} {{ course.year }}</p>
+            {% if course.description %}
+                <p class="course-description">{{ course.description }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{% if not current_courses and not past_courses %}
+    <p class="no-data">No courses added yet.</p>
+{% endif %}
+{% endblock %}

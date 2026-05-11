@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>About Me</h1>
+</section>
+
+<section class="about-section">
+    <div class="about-content">
+        <div class="about-image">
+            {% if profile and profile.profile_image %}
+                <img src="{{ url_for('static', filename='images/' + profile.profile_image) }}" alt="Profile Photo">
+            {% else %}
+                <div class="about-initials">
+                    {% if profile and profile.name %}
+                        {{ profile.name[0] }}
+                    {% else %}
+                        ?
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="about-bio">
+            {% if profile and profile.bio %}
+                <p>{{ profile.bio }}</p>
+            {% else %}
+                <p>Bio not added yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% if awards %}
+<section class="awards-section">
+    <h2>Awards & Honors</h2>
+    <div class="awards-list">
+        {% for award in awards %}
+        <div class="award-card">
+            <div class="award-year">{{ award.year }}</div>
+            <div class="award-info">
+                <h3>{{ award.title }}</h3>
+                <p>{{ award.organization }}</p>
+                {% if award.description %}
+                    <p class="award-description">{{ award.description }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}

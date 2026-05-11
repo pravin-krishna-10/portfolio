@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Contact</h1>
+    <p>Get in touch</p>
+</section>
+
+<section class="contact-section">
+    <div class="contact-grid">
+        <div class="contact-card">
+            <h3>Email</h3>
+            <p>{{ profile.email if profile and profile.email else 'Not added' }}</p>
+        </div>
+        <div class="contact-card">
+            <h3>Phone</h3>
+            <p>{{ profile.phone if profile and profile.phone else 'Not added' }}</p>
+        </div>
+        <div class="contact-card">
+            <h3>Office</h3>
+            <p>{{ profile.office if profile and profile.office else 'Not added' }}</p>
+        </div>
+    </div>
+
+    <div class="academic-profiles">
+        <h2>Academic Profiles</h2>
+        <div class="profile-links">
+            {% if profile and profile.google_scholar %}
+                <a href="{{ profile.google_scholar }}" target="_blank" class="profile-link">Google Scholar</a>
+            {% endif %}
+            {% if profile and profile.github %}
+                <a href="{{ profile.github }}" target="_blank" class="profile-link">GitHub</a>
+            {% endif %}
+            {% if profile and profile.linkedin %}
+                <a href="{{ profile.linkedin }}" target="_blank" class="profile-link">LinkedIn</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

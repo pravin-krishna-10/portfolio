@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Publications{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Publications</h1>
+    <p>Complete list of research papers, conference proceedings, and book chapters</p>
+</section>
+
+<section class="filter-section">
+    <div class="filter-buttons">
+        <a href="{{ url_for('publications', category='all') }}" class="filter-btn {{ 'active' if category == 'all' }}">All</a>
+        <a href="{{ url_for('publications', category='Journal') }}" class="filter-btn {{ 'active' if category == 'Journal' }}">Journal</a>
+        <a href="{{ url_for('publications', category='Conference') }}" class="filter-btn {{ 'active' if category == 'Conference' }}">Conference</a>
+        <a href="{{ url_for('publications', category='Book Chapter') }}" class="filter-btn {{ 'active' if category == 'Book Chapter' }}">Book Chapter</a>
+    </div>
+</section>
+
+<section class="publications-list">
+    {% set current_year = None %}
+    {% for paper in papers %}
+        {% if paper.year != current_year %}
+            {% set current_year = paper.year %}
+            <h2 class="year-heading">{{ paper.year }}</h2>
+        {% endif %}
+
+        <div class="publication-card">
+            <div class="publication-info">
+                <h3>{{ paper.title }}</h3>
+                <p class="paper-authors">{{ paper.authors }}</p>
+                <p class="paper-journal">{{ paper.journal }}</p>
+                {% if paper.abstract %}
+                    <p class="paper-abstract">{{ paper.abstract[:200] }}{% if paper.abstract|length > 200 %}...{% endif %}</p>
+                {% endif %}
+                <span class="paper-category">{{ paper.category }}</span>
+            </div>
+            <div class="publication-actions">
+                {% if paper.pdf_filename %}
+                    <a href="{{ url_for('static', filename='papers/' + paper.pdf_filename) }}" class="btn-small">PDF</a>
+                {% endif %}
+                {% if paper.doi %}
+                    <a href="{{ paper.doi }}" target="_blank" class="btn-small btn-outline">DOI</a>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <p class="no-data">No publications found.</p>
+    {% endfor %}
+</section>
+{% endblock %}

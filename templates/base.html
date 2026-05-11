@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Portfolio{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-logo">
+                {% if profile and profile.name %}
+                    Dr. {{ profile.name }}
+                {% else %}
+                    My Portfolio
+                {% endif %}
+            </a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">Home</a></li>
+                <li><a href="{{ url_for('publications') }}" class="{{ 'active' if request.endpoint == 'publications' }}">Publications</a></li>
+                <li><a href="{{ url_for('teaching') }}" class="{{ 'active' if request.endpoint == 'teaching' }}">Teaching</a></li>
+                <li><a href="{{ url_for('about') }}" class="{{ 'active' if request.endpoint == 'about' }}">About</a></li>
+                <li><a href="{{ url_for('contact') }}" class="{{ 'active' if request.endpoint == 'contact' }}">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Page Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2026
+                {% if profile and profile.name %}
+                    Dr. {{ profile.name }}
+                {% else %}
+                    My Portfolio
+                {% endif %}
+                | All rights reserved
+            </p>
+            <div class="footer-links">
+                {% if profile and profile.google_scholar %}
+                    <a href="{{ profile.google_scholar }}" target="_blank">Google Scholar</a>
+                {% endif %}
+                {% if profile and profile.github %}
+                    <a href="{{ profile.github }}" target="_blank">GitHub</a>
+                {% endif %}
+                {% if profile and profile.linkedin %}
+                    <a href="{{ profile.linkedin }}" target="_blank">LinkedIn</a>
+                {% endif %}
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

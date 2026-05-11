@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-image">
+            {% if profile and profile.profile_image %}
+                <img src="{{ url_for('static', filename='images/' + profile.profile_image) }}" alt="Profile Photo">
+            {% else %}
+                <div class="hero-initials">
+                    {% if profile and profile.name %}
+                        {{ profile.name[0] }}
+                    {% else %}
+                        ?
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="hero-text">
+            <h1>{{ profile.name if profile else 'Your Name' }}</h1>
+            <p class="hero-designation">{{ profile.designation if profile else 'Assistant Professor' }}</p>
+            <p class="hero-department">{{ profile.department if profile else 'Department' }} | {{ profile.university if profile else 'University' }}</p>
+            <p class="hero-email">{{ profile.email if profile else 'email@university.edu' }}</p>
+        </div>
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-number">{{ total_publications }}</span>
+            <span class="stat-label">Publications</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ total_courses }}</span>
+            <span class="stat-label">Courses Taught</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">{{ total_awards }}</span>
+            <span class="stat-label">Awards</span>
+        </div>
+    </div>
+</section>
+
+<section class="recent-section">
+    <h2>Recent Publications</h2>
+    <div class="recent-papers">
+        {% for paper in recent_papers %}
+        <div class="paper-card">
+            <h3>{{ paper.title }}</h3>
+            <p class="paper-authors">{{ paper.authors }}</p>
+            <p class="paper-journal">{{ paper.journal }} | {{ paper.year }}</p>
+            <div class="paper-links">
+                {% if paper.pdf_filename %}
+                    <a href="{{ url_for('static', filename='papers/' + paper.pdf_filename) }}" class="btn-small">PDF</a>
+                {% endif %}
+                {% if paper.doi %}
+                    <a href="{{ paper.doi }}" target="_blank" class="btn-small btn-outline">DOI</a>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+            <p class="no-data">No publications added yet.</p>
+        {% endfor %}
+    </div>
+    {% if total_publications > 3 %}
+        <a href="{{ url_for('publications') }}" class="view-all-link">View all publications →</a>
+    {% endif %}
+</section>
+{% endblock %}
